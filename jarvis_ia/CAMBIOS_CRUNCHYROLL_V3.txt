@@ -1,0 +1,84 @@
+JARVIS — versión corregida para Crunchyroll
+Fecha: 2026-08-09
+Base: jarvis_fixed_v2.zip
+
+Objetivo
+Corregir el flujo "reproduce Solo Leveling capítulo 5 en Crunchyroll", especialmente:
+- evitar que se vuelva a seleccionar el perfil cuando ya estás dentro de Crunchyroll;
+- evitar que la frase completa del comando de voz termine en el campo de búsqueda;
+- reducir navegación accidental causada por borrados y tiempos fijos;
+- comprobar mejor que la pantalla realmente contiene resultados antes de seleccionar.
+
+Cambios aplicados
+
+1. Detección del estado actual de Crunchyroll
+Archivo: skills/tv_skill.py
+Se añadió detección aproximada de:
+- perfiles
+- home
+- búsqueda
+- desconocido
+
+También se consulta qué package Android está realmente en primer plano. Esto permite reutilizar una sesión de Crunchyroll ya abierta en vez de arrancarla y volver a buscar el perfil.
+
+2. Selección de perfil condicional
+Antes: reproducir_crunchyroll() siempre intentaba seleccionar el perfil después de lanzar Crunchyroll.
+Ahora: el perfil solo se toca si el árbol UI parece ser realmente el selector de perfiles.
+Si ya estás dentro de la app, no se mueve el D-pad buscando el perfil.
+
+3. Normalización defensiva del título
+Se añadió _normalizar_query_tv().
+Aunque el clasificador ya extrae correctamente "solo leveling", ahora TVSkill también limpia defensivamente frases como:
+"reproduce solo leveling capítulo 5 en crunchyroll"
+y las convierte en:
+"solo leveling"
+
+Esto evita que un fallo de clasificación o una ruta alternativa mande la orden completa al buscador.
+
+4. Escritura más segura en la búsqueda
+Se eliminó la estrategia de borrar 50 veces sin comprobar el contexto.
+Ahora el borrado se realiza dentro de una función específica de escritura en búsqueda, después de haber abierto/localizado el buscador.
+Esto reduce el riesgo de que KEYCODE_DEL termine moviendo el foco por la interfaz.
+
+5. Validación de resultados mejorada
+Antes se comprobaba solamente si aparecía la primera palabra del título en el XML.
+Ahora se comprueban los términos relevantes del título y se evita considerar suficiente la simple aceptación del intent por Android.
+
+6. Selección del resultado
+Se mejoró _coords_primer_resultado() para:
+- buscar coincidencias del título;
+- ignorar la zona superior típica de la barra de búsqueda;
+- dar prioridad a elementos clickable/focusable;
+- usar D-pad como fallback cuando no hay coordenadas confiables.
+
+7. Búsqueda desde una sesión ya abierta
+Si JARVIS detecta que Crunchyroll ya está en primer plano:
+- no vuelve a lanzar la app;
+- no vuelve a seleccionar perfil;
+- intenta continuar desde el estado actual.
+
+8. Episodio
+Se mejoró la coincidencia del capítulo para evitar que buscar capítulo 5 haga match accidental con 15, 25, etc.
+Se priorizan etiquetas como "Episode 5", "Episodio 5", "Ep. 5", "Capítulo 5" o el nodo cuyo texto sea exactamente "5".
+
+9. Esperas
+Se redujeron varias esperas fijas y se reutiliza _esperar_ui_estable() con pausas cortas.
+La intención es esperar a que la pantalla realmente se estabilice, no asumir que siempre tarda exactamente X segundos.
+
+10. Compatibilidad
+No se cambió Python por C/C++.
+Los cambios están contenidos en skills/tv_skill.py y no requieren una reescritura de la arquitectura.
+
+Pruebas realizadas
+- Todos los archivos Python del proyecto compilan sin errores de sintaxis.
+- El clasificador existente devuelve:
+  action=reproducir
+  plataforma=crunchyroll
+  query=solo leveling
+  capitulo=5
+  para "reproduce solo leveling capítulo 5 en crunchyroll".
+- La normalización defensiva de TVSkill también devuelve "solo leveling".
+
+Limitación importante
+No tengo acceso físico a tu Android TV durante esta revisión, por lo que no puedo confirmar todavía los IDs/labels exactos que expone TU versión de Crunchyroll.
+La siguiente prueba debe hacerse en la TV real. Si falla, el archivo jarvis_cr_debug.xml que ya genera el módulo será especialmente útil para ajustar la detección a tu interfaz exacta.

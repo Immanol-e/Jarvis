@@ -1,0 +1,57 @@
+JARVIS — CAMBIOS CRUNCHYROLL V4
+
+Objetivo de esta versión:
+Corregir el punto que quedó fallando en V3: después de escribir correctamente
+"Solo Leveling", Crunchyroll mostraba resultados pero JARVIS no seleccionaba el anime.
+
+CAMBIOS PRINCIPALES
+
+1. Selector de resultados de Crunchyroll reescrito.
+   - Ya no depende de un único patrón de regex frágil.
+   - Extrae nodos de uiautomator con text/content-desc y bounds.
+   - Prioriza coincidencia exacta con el título.
+   - Da prioridad a elementos clickable/focusable.
+   - Ignora la zona superior de la pantalla para no confundir la caja de búsqueda
+     con el resultado.
+
+2. Añadido fallback por foco de Android TV.
+   - Algunas versiones de Crunchyroll renderizan las tarjetas de contenido de una
+     forma en la que uiautomator no marca el elemento como clickable.
+   - En ese caso V4 lee el elemento focused y usa D-pad Abajo hasta encontrar
+     "Solo Leveling"; cuando lo encuentra, pulsa OK.
+   - Esto evita depender exclusivamente de coordenadas.
+
+3. Se mantiene la mejora de V3 en la escritura.
+   - La búsqueda sigue recibiendo solamente el título normalizado.
+   - No se modificó la parte que ya estaba funcionando mejor.
+
+4. Se corrigió la detección de resultados.
+   - V3 podía considerar que había resultados simplemente porque el título
+     aparecía dentro de la caja de búsqueda.
+   - V4 exige encontrar el título en un nodo situado debajo de la barra superior.
+
+5. Se añadió normalización de texto de UI.
+   - Decodifica entidades HTML del XML.
+   - Normaliza espacios y caracteres de puntuación.
+   - Permite comparar títulos con pequeñas diferencias de representación.
+
+6. Validación.
+   - Se ejecutó compilación/sintaxis sobre los archivos Python del proyecto.
+   - No se encontraron errores de sintaxis.
+
+QUÉ ESPERO QUE CAMBIE
+
+Al decir:
+"Reproduce Solo Leveling capítulo 5 en Crunchyroll"
+
+el flujo esperado ahora es:
+voz -> título normalizado -> búsqueda -> detectar resultado -> seleccionar
+"Solo Leveling" -> entrar al anime -> localizar capítulo 5.
+
+SI FALLA
+
+La siguiente información más útil será el estado de la pantalla justo después de
+que aparezcan los resultados. La V4 deja la selección aislada en
+_seleccionar_resultado_crunchyroll(), por lo que el siguiente diagnóstico puede
+concentrarse en la UI real de Crunchyroll sin tocar nuevamente el reconocimiento
+ni la escritura.

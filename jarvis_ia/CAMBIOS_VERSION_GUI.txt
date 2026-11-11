@@ -1,0 +1,36 @@
+VERSION: JARVIS IA con interfaz visual y creador de interfaces
+
+NUEVO:
+- main_gui.py
+- app/jarvis_ui.py
+- skills/gui_builder_skill.py
+- run_jarvis.bat
+- run_jarvis_terminal.bat
+
+MODIFICADO:
+- app/assistant.py
+  - Se agregó callback para conectar respuestas con la interfaz gráfica.
+- skills/registry.py
+  - Se registró la nueva habilidad gui_builder.
+- brain/task_planner.py
+  - Ahora detecta órdenes naturales para crear interfaces gráficas.
+- brain/ai_router.py
+  - Ollama también puede convertir peticiones de interfaces en acciones ejecutables.
+
+QUÉ HACE AHORA:
+- Jarvis puede abrir con doble clic usando run_jarvis.bat.
+- Jarvis tiene una ventana visual con chat, entrada de comandos, botón para hablar y accesos rápidos.
+- Jarvis puede crear interfaces en:
+  - Python Tkinter
+  - Java Swing
+  - HTML/CSS/JS
+
+COMANDOS DE PRUEBA:
+- crea una interfaz en python con menu y botones
+- crea una interfaz java swing para proyecto practica y abrela en visual
+- crea una interfaz web para login con dashboard
+- en el proyecto calculadora crea un menu visual con botones
+
+NOTA:
+- run_jarvis.bat abre la interfaz visual.
+- run_jarvis_terminal.bat abre el modo terminal clásico.

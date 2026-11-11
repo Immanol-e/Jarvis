@@ -1,0 +1,19 @@
+requests
+PyPDF2
+pyautogui
+pywhatkit
+SpeechRecognition
+edge-tts
+playsound==1.2.2
+PyAudio
+
+# Voz de respaldo cuando edge-tts no tiene internet (voice/text_to_speech.py)
+pyttsx3
+
+# Búsqueda semántica del RAG (brain/knowledge_base.py)
+numpy
+
+# Modelo de embeddings del RAG. Jala torch, son ~2 GB de descarga.
+# Si no vas a usar los comandos de memoria ("qué sabes sobre...") puedes
+# comentar esta línea: el resto de JARVIS funciona sin ella.
+sentence-transformers

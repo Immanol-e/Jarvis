@@ -1,0 +1,49 @@
+# ── Entornos virtuales ────────────────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ── Python ────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+
+# ── Secretos ──────────────────────────────────────────────────────────
+.env
+.env.*
+
+# ── Modelos (pesos, embeddings, Modelfile generado) ───────────────────
+models/
+modelos/
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+jarvis_ia/Modelfile
+jarvis_ia/knowledge/.idx_embeddings.npy
+jarvis_ia/knowledge/.idx_chunks.json
+
+# ── Audio temporal / caché de voz ─────────────────────────────────────
+jarvis_ia/data/audio/
+*.wav
+*.mp3
+
+# ── Datos de ejecución (se generan solos al usar JARVIS) ──────────────
+data/
+jarvis_ia/data/jarvis.db
+jarvis_ia/data/logs/
+jarvis_ia/custom_intents.json
+jarvis_ia/finetune_dataset.jsonl
+jarvis_cr_debug.xml
+
+# ── Librerías nativas compiladas ──────────────────────────────────────
+jarvis_ia/native/*.dll
+jarvis_ia/native/*.so
+jarvis_ia/native/*.dylib
+
+# ── Editor / SO ───────────────────────────────────────────────────────
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

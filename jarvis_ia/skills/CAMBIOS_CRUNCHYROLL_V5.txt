@@ -1,0 +1,27 @@
+JARVIS — CAMBIOS CRUNCHYROLL V5
+
+Problema reportado en V4:
+JARVIS escribía correctamente "Solo Leveling", pero después decía:
+"No pude encontrar resultados para 'solo leveling'".
+
+Causa:
+La detección de resultados era demasiado estricta. Crunchyroll puede
+representar la tarjeta del anime mediante nodos distintos según la versión
+de la app/Android TV, y V4 descartaba la pantalla si no encontraba el título
+en un nodo con la estructura esperada.
+
+Cambios:
+1. La detección de resultados ahora acepta:
+   - coincidencia del título en cualquier nodo visible;
+   - palabras del título repartidas en nodos de la zona de resultados;
+   - indicadores de una pantalla de búsqueda/resultados.
+2. El flujo ya no aborta después de escribir si el XML no expone el resultado
+   con el formato esperado. Continúa hasta el selector real.
+3. El selector ahora busca coincidencias exactas y parciales en text y
+   content-desc, sin exigir clickable=true.
+4. Si no encuentra coordenadas, usa el foco real de Android TV y prueba
+   derecha/abajo para llegar a la tarjeta.
+5. Al fallar definitivamente, guarda jarvis_cr_debug.xml para poder ver
+   exactamente qué expone Crunchyroll en esa TV.
+
+No se cambió la lógica que ya estaba funcionando para escribir "Solo Leveling".

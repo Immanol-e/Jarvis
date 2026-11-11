@@ -1,0 +1,35 @@
+Nueva mejora: editor inteligente de archivos y proyectos
+
+Archivos nuevos:
+- skills/code_editor_skill.py
+
+Archivos modificados:
+- skills/registry.py
+- brain/task_planner.py
+- brain/ai_router.py
+- brain/intent_classifier.py
+
+Qué puede hacer ahora:
+- Buscar archivos por nombre en Documentos, Escritorio y Descargas.
+- Leer archivos de texto/código.
+- Explicar archivos .py, .java, .html, .css, .js, .ino, .txt, .md, etc.
+- Modificar archivos existentes con copia de seguridad automática.
+- Agregar un menú básico a proyectos Python o Java.
+- Agregar formulario de login a index.html.
+- Agregar tema de colores a style.css.
+- Crear clases Java o Python dentro de proyectos existentes.
+- Abrir archivos o proyectos en Visual Studio Code.
+
+Comandos para probar:
+- busca el archivo main.py
+- explícame qué hace main.py
+- lee el archivo README.md
+- modifica el index.html y ponle un formulario de login
+- cambia los colores del style.css
+- abre el proyecto calculadora y agrégale un menú
+- crea una clase llamada Usuario en el proyecto practica
+- abre el proyecto login en visual
+
+Notas:
+- Antes de modificar un archivo existente, Jarvis crea una copia de seguridad con terminación .jarvis_backup_fecha_hora.
+- Si Visual Studio Code no abre, revisa que el comando code esté habilitado en Windows.
